@@ -15,7 +15,7 @@ export function Addmovie() {
 
   const OnDletefun = (index) => {
     moviesarray.splice(index, 1);
-  console.log(moviesarray)
+    console.log(moviesarray);
   };
 
   const addDatafun = (e) => {

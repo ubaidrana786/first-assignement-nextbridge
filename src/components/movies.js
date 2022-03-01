@@ -1,10 +1,10 @@
 import React from "react";
 import {Addmovie} from "./Addmovie";
 
-export function Movies ({dummydata}){
+export function Movies (){
   
     return (
-       <Addmovie dummydata={dummydata}/>
+       <Addmovie />
     )
 };
 
