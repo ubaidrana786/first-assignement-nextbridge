@@ -4,7 +4,8 @@ import {Addmovie} from "./Addmovie";
 export function Movies (){
   
     return (
-       <Addmovie />
+        <div className="container mt-5">    <Addmovie /></div>
+   
     )
 };
 
