@@ -31,7 +31,7 @@ export const Login = ()=>{
                             <span className="check-label">I agree to the <a href="">Terms</a> and <a href="">Privacy Policy.</a></span>
                         </div>
                         <Link to="/signup" className="btn signup">Sign up</Link>
-                        <Link to="/login" className="btn signup">Sign In</Link>
+                        <Link to="/login" className="btn signin">Sign In</Link>
                     </form>
                 </div>
             </div>

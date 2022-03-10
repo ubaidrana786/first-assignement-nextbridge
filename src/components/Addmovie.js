@@ -1,20 +1,30 @@
 import React, { useState } from "react";
-import { MovieList } from "./MovieList";
 import { useFormik } from "formik";
+import "./Addmovie.css"
+import * as yup from 'yup';
+
 
 export function Addmovie() {
   const [moviesarray, setMoviesarray] = useState([]);
   const [selectedIndex, setselectedIndex] = useState(null);
   const [formToggle, setformToggle] = useState(false);
 
+  let schema = yup.object().shape({
+    title: yup.string().required(),
+    discription: yup.string().required(),
+  
+  });
+
   const formik = useFormik({
     initialValues: {
       title: "",
       discription: "",
     },
+    validationSchema:schema,
     onSubmit: (values) => {
       addDatafun(values);
     },
+   
   });
 
   const HandleToggle = () => {
@@ -51,31 +61,32 @@ export function Addmovie() {
       <div className="row" style={{justifyContent:"center"}}>
         
           {formToggle == true ? (
-            <div className="col-md-6 card p-5" style={{ maxHeight: "400px" }}>
-            <form onSubmit={formik.handleSubmit}>
+            <div className="col-md-8 card p-3" style={{ maxHeight: "400px" }}>
+            <form onSubmit={formik.handleSubmit} className="setform">
               <div className="mb-3">
-                <label for="exampleInputEmail1" className="form-label">
-                  Movie Title
-                </label>
+               
                 <input
+                placeholder="  Movie Title"
                   type="text"
                   className="form-control"
                   name="title"
                   onChange={formik.handleChange}
                   value={formik.values.title}
                 />
+                {formik.errors.title && <p className="showerror">Title is required</p>}
               </div>
               <div className="mb-3">
-                <label for="exampleInputPassword1" className="form-label">
-                  Discription
-                </label>
                 <textarea
+                rows="1"
                   type="text"
+                  placeholder="Discription"
                   name="discription"
                   className="form-control"
                   onChange={formik.handleChange}
                   value={formik.values.discription}
+                  
                 />
+                 {formik.errors.discription && <p className="showerror">discription is required</p>}
               </div>
 
               <button type="submit" className="btn ">
@@ -105,7 +116,7 @@ export function Addmovie() {
         </div>
          
           
-          <table class="table">
+          <table className="table">
             <thead>
               <tr>
                 <th scope="col">#</th>
