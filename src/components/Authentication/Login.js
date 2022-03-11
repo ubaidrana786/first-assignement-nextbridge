@@ -1,9 +1,14 @@
-import React from "react";
+import React,{useContext} from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./Login.css";
 import { useFormik } from "formik";
+import {RootContext} from "../../RootContext"
 
 export const Login = () => {
+    const { currentUser,
+        setCurrentUser,
+        authToken,
+        setAuthToken } = useContext(RootContext)
   const history = useHistory();
 
   const formik = useFormik({
@@ -11,13 +16,21 @@ export const Login = () => {
       email: "",
       password: "",
     },
-    onSubmit: (values) => {
-      if (values.email !== "" && values.password !== "") {
-          window.localStorage.setItem("Token", "12345678")
-        history.push("/");
-      }
-    },
+    onSubmit:({email,password})=>{
+        if(email !== '' && password !== '') {
+             setCurrentUser({
+                email,
+                password
+             });
+             setAuthToken('123455')
+            history.push('/');
+        }
+    }
   });
+
+  if(authToken) {
+    history.push('/')
+}
 
   return (
     <div className="form-bg">

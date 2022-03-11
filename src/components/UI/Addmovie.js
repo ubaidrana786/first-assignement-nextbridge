@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useFormik } from "formik";
 import "./Addmovie.css";
 import * as yup from "yup";
+import axios from "axios";
 
 export function Addmovie() {
   const [moviesarray, setMoviesarray] = useState([]);
   const [selectedIndex, setselectedIndex] = useState(null);
+  const [selectedMovie, setselectedMovie] = useState(null);
   const [formToggle, setformToggle] = useState(false);
 
   let schema = yup.object().shape({
@@ -14,11 +16,16 @@ export function Addmovie() {
   });
 
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      discription: "",
-    },
+    initialValues:
+      selectedMovie !== null
+        ? selectedMovie
+        : {
+            title: "",
+            discription: "",
+          },
+
     validationSchema: schema,
+    enableReinitialize: true,
     onSubmit: (values) => {
       addDatafun(values);
     },
@@ -30,8 +37,7 @@ export function Addmovie() {
 
   const OnEditfun = (index) => {
     setselectedIndex(index);
-    //   setTitle(moviesarray[index].title);
-    //   setDiscription(moviesarray[index].discription);
+    setselectedMovie(moviesarray[index]);
   };
 
   const addDatafun = (values) => {
@@ -53,41 +59,43 @@ export function Addmovie() {
     dummy.splice(index, 1);
     setMoviesarray(dummy);
   };
+
+  useEffect(()=>{
+    axios.get("https://jsonplaceholder.typicode.com/posts").then((res)=>{
+setMoviesarray(res.data)
+    })
+  })
   return (
     <div>
       <div className="row" style={{ justifyContent: "center" }}>
         {formToggle == true ? (
-          <div className="col-md-8 card p-3" style={{ maxHeight: "400px" }}>
+          <div className="col-md-8 card p-3" style={{ maxHeight: "300px" }}>
             <form onSubmit={formik.handleSubmit} className="setform">
               <div className="mb-3">
                 <input
+                  value={formik.values.title}
+                  onChange={formik.handleChange}
                   placeholder="  Movie Title"
                   type="text"
                   className="form-control"
                   name="title"
-                  onChange={formik.handleChange}
-                  value={formik.values.title}
                 />
-                {formik.errors.title && (
-                  <p className="showerror">Title is required</p>
-                )}
+               {formik.errors.title && <p className="showerror">{formik.errors.title}</p>}
               </div>
               <div className="mb-3">
                 <textarea
+                  value={formik.values.discription}
+                  onChange={formik.handleChange}
                   rows="1"
                   type="text"
                   placeholder="Discription"
                   name="discription"
                   className="form-control"
-                  onChange={formik.handleChange}
-                  value={formik.values.discription}
                 />
-                {formik.errors.discription && (
-                  <p className="showerror">discription is required</p>
-                )}
+               {formik.errors.description && <p className="showerror">{formik.errors.description}</p>}
               </div>
 
-              <button type="submit" className="btn ">
+              <button type="submit" className="btn btn-md">
                 {selectedIndex !== null ? "Update" : "Add"}
               </button>
             </form>
@@ -126,7 +134,7 @@ export function Addmovie() {
                     <tr>
                       <td key={index}>{index}</td>
                       <td>{element.title}</td>
-                      <td>{element.discription}</td>
+                      <td>{element.body}</td>
                       <td>
                         <button
                           className="btn"
