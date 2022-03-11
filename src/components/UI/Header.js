@@ -18,11 +18,11 @@ export function Header() {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
+          {/* <li className="nav-item active">
             <Link to="/login" className="nav-link text-white">
              Login <span className="sr-only">(current)</span>
             </Link>
-          </li>
+          </li> */}
 
         </ul>
         <form className="form-inline my-2 my-lg-0">
