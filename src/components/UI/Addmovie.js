@@ -17,7 +17,7 @@ export function Addmovie() {
 
   const formik = useFormik({
     initialValues:
-      selectedMovie !== null
+      selectedMovie !== null 
         ? selectedMovie
         : {
             title: "",
@@ -41,6 +41,21 @@ export function Addmovie() {
   };
 
   const addDatafun = (values) => {
+    axios.post("https://jsonplaceholder.typicode.com/posts",{
+      id : moviesarray.length,
+      title:values.title,
+      body:values.discription
+    }).then(response=>{
+      if(response.status === 201){
+        let dummy = [...moviesarray];
+        dummy.unshift({
+          title: values.title,
+          body: values.discription,
+        });
+        setMoviesarray(dummy)
+      }
+      console.log(response)
+    })
     let dummy = [...moviesarray];
     if (selectedIndex !== null) {
       dummy[selectedIndex].title = values.title;
