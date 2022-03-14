@@ -6,7 +6,7 @@ export function Header() {
 
   const logout = (e) => {
     e.preventDefault();
-    window.localStorage.clear();
+    // window.localStorage.clear();
     history.push("/login");
   };
 

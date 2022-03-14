@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import "./Addmovie.css";
 import * as yup from "yup";
@@ -60,11 +60,12 @@ export function Addmovie() {
     setMoviesarray(dummy);
   };
 
-  useEffect(()=>{
-    axios.get("https://jsonplaceholder.typicode.com/posts").then((res)=>{
-setMoviesarray(res.data)
-    })
-  })
+  useEffect(() => {
+    axios.get("https://jsonplaceholder.typicode.com/posts").then((res) => {
+      setMoviesarray(res.data);
+      console.log(res.data)
+    });
+  },[]);
   return (
     <div>
       <div className="row" style={{ justifyContent: "center" }}>
@@ -80,7 +81,9 @@ setMoviesarray(res.data)
                   className="form-control"
                   name="title"
                 />
-               {formik.errors.title && <p className="showerror">{formik.errors.title}</p>}
+                {formik.errors.title && (
+                  <p className="showerror">{formik.errors.title}</p>
+                )}
               </div>
               <div className="mb-3">
                 <textarea
@@ -92,7 +95,9 @@ setMoviesarray(res.data)
                   name="discription"
                   className="form-control"
                 />
-               {formik.errors.description && <p className="showerror">{formik.errors.description}</p>}
+                {formik.errors.description && (
+                  <p className="showerror">{formik.errors.description}</p>
+                )}
               </div>
 
               <button type="submit" className="btn btn-md">
