@@ -17,8 +17,11 @@ export function Addmovie() {
 
   const formik = useFormik({
     initialValues:
-      selectedMovie !== null 
-        ? selectedMovie
+      selectedMovie !== null
+        ? {
+            title: selectedMovie.title,
+            discription: selectedMovie.body,
+          }
         : {
             title: "",
             discription: "",
@@ -41,33 +44,40 @@ export function Addmovie() {
   };
 
   const addDatafun = (values) => {
-    axios.post("https://jsonplaceholder.typicode.com/posts",{
-      id : moviesarray.length,
-      title:values.title,
-      body:values.discription
-    }).then(response=>{
-      if(response.status === 201){
-        let dummy = [...moviesarray];
-        dummy.unshift({
+    if (selectedMovie === null) {
+      axios
+        .post("https://jsonplaceholder.typicode.com/posts", {
+          id: moviesarray.length,
           title: values.title,
           body: values.discription,
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            let dummy = [...moviesarray];
+            dummy.unshift({
+              title: values.title,
+              body: values.discription,
+            });
+            setMoviesarray(dummy);
+          }
         });
-        setMoviesarray(dummy)
-      }
-      console.log(response)
-    })
-    let dummy = [...moviesarray];
-    if (selectedIndex !== null) {
-      dummy[selectedIndex].title = values.title;
-      dummy[selectedIndex].discription = values.discription;
     } else {
-      dummy.push({
-        title: values.title,
-        discription: values.discription,
-      });
+      axios.put(`https://jsonplaceholder.typicode.com/posts/${selectedMovie.id}`,{
+        title : values.title,
+        body:values.discription
+      }).then((response)=>{
+        if(response.status === 200){
+          let dummy = [...moviesarray];
+          dummy[selectedIndex].title = values.title;
+          dummy[selectedIndex].discription = values.discription;
+          setMoviesarray(dummy);
+          formik.resetForm();
+          setselectedIndex(null)
+        }
+      })
     }
-    formik.resetForm();
-    setMoviesarray(dummy);
+
+    
   };
   const OnDletefun = (index) => {
     let dummy = [...moviesarray];
@@ -78,9 +88,9 @@ export function Addmovie() {
   useEffect(() => {
     axios.get("https://jsonplaceholder.typicode.com/posts").then((res) => {
       setMoviesarray(res.data);
-      console.log(res.data)
+      console.log(res.data);
     });
-  },[]);
+  }, []);
   return (
     <div>
       <div className="row" style={{ justifyContent: "center" }}>
